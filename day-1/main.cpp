@@ -13,7 +13,7 @@ int main()
 		a = a / 3 - 2;
 		total_fuel_needed += a;
 	}
-	std::cout << "Total fuel needed: " << total_fuel_needed << "\n";
+	std::cout << "Total fuel needed: " << total_fuel_needed << '\n';
 	return 0;
 }
 

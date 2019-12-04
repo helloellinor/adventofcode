@@ -13,8 +13,8 @@ const int halt = 99;
 void get_values()
 {
 	int a;
-	std::ifstream infile("input-modified.txt");
-	while (infile >> a){
+	std::ifstream infile("input-part-2.txt");
+	while (infile >> a) {
 		value.push_back(a);
 		if (infile.peek() == ',')
 			infile.ignore();
@@ -26,16 +26,16 @@ void get_values()
 
 int execute_opcode(int opcode, int v1, int v2)
 {
-int result = 0;
-switch (opcode) {
-	case 1:
-		result = v1 + v2;
-		break;
-	case 2:
-		result = v1 * v2;
-		break;
-}
-return result;
+	int result = 0;
+	switch (opcode) {
+		case 1:
+			result = v1 + v2;
+			break;
+		case 2:
+			result = v1 * v2;
+			break;
+	}
+	return result;
 }
 
 //-----------------------------------------------------------------------------
@@ -65,7 +65,20 @@ void calculate()
 int main()
 {
 	get_values();
-	calculate();
-	std::cout << "Value at position 0: " << value[0] << '\n';
+	for (int i = 0; i <= 99; ++i) {
+		value[1] = i;
+		for (int j = 0; j <= 99; ++j) {
+			value[2] = j;
+			calculate();
+			if (value[0] == 19690720) {
+				std::cout << "Result: " << 100 *  value[1] + value[2] << '\n';
+				return 0;
+			}
+			value.clear();
+			get_values();
+			//super hacky, make sure get_values leaves value[1] alone
+			value[1] = i;
+		}
+	}
 	return 0;
 }

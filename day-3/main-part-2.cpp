@@ -13,6 +13,7 @@ class Point {
 public:
 	int x_pos;
 	int y_pos;
+	int index;
 	Point(int,int);
 	//manhattan distance
 	int distance_to(void) { return std::abs(x_pos) + std::abs(y_pos); }
@@ -24,6 +25,7 @@ Point::Point(int x, int y)
 {
 	x_pos = x;
 	y_pos = y;	
+	index = 0;
 }
 
 bool Point::operator==(const Point& a) {
@@ -101,6 +103,7 @@ void to_segment(std::vector<Point>& wire, Instruction i, Point& last)
 			++last.y_pos;
 			break;
 		}
+		++last.index;
 		wire.push_back(last);
 	}
 	return;
@@ -122,19 +125,25 @@ int main()
 	std::vector<Point> wire1;
 	last.x_pos = 0;
 	last.y_pos = 0;
+	last.index = 0;
 	for (auto i : line)
 		to_segment(wire1,to_instruction(i),last);
 	
 	Point origin(0,0);
 	int lowest = INT_MAX;
-	std::vector<Point> intersections;
-	for (int i = 0; i < wire0.size(); ++i)
-		for (int j = 0; j < wire1.size(); ++j)
-			if (wire0[i] == wire1[j])
-				intersections.push_back(wire0[i]);
-	for (int i = 0; i < intersections.size(); ++i)
-		if (intersections[i] != origin && intersections[i].distance_to() <= lowest)
-			lowest = intersections[i].distance_to();
-	std::cout << "Distance to closest intersection: " << lowest << '\n';
+	std::vector<Point> intersections0;
+	std::vector<Point> intersections1;
+	for (int i = 0; i < wire0.size(); ++i) {	
+		for (int j = 0; j < wire1.size(); ++j) {
+			if (wire0[i] == wire1[j]) {
+				intersections0.push_back(wire0[i]);
+				intersections1.push_back(wire1[j]);
+			}
+		}
+	}
+	for (int i = 0; i < intersections0.size(); ++i)
+		if (intersections0[i] != origin && intersections0[i].index + intersections1[i].index <= lowest)
+			lowest = intersections0[i].index + intersections1[i].index;
+	std::cout << "Distance to intersection with least wire: " << lowest << '\n';
 	return 0;
 }

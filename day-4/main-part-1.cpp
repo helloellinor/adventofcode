@@ -10,17 +10,18 @@ int main()
 			if (password[j] < password[j-1])
 				for (int k = j; k <= 5; ++k)
 			 		password[k] = password[j-1];
-		int consecutive = 0;
+		bool consecutive = false;
 		for (int j = 5; j >= 0; --j)
-			if (password[j] == password[j-1])
-				++consecutive;
-		if (consecutive > 0) {
+			if (password[j] == password[j-1]) {
+				consecutive = true;
+				break;
+			}
+		if (consecutive == true) {
 			i = std::stoi(password);
 			if (i >= 654504)
 				break;
 			++answers;
 		}
-		
 	}
 	std::cout << "Number of unique passwords: " << answers << '\n';
 	return 0;

@@ -16,7 +16,7 @@ int main()
 				consecutive = true;
 				break;
 			}
-		if (consecutive == true) {
+		if (consecutive) {
 			i = std::stoi(password);
 			if (i >= 654504)
 				break;
